@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package msg;
+option go_package = "./msg";
+
+service Messenger{
+  rpc SendMsg (stream Msg) returns (stream Msg) {}
+}
+
+//Data type used for inter-node communication
+message Msg{
+  int32 id = 1;
+}
