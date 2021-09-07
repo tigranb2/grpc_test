@@ -11,6 +11,8 @@ import (
 var acks = 3
 var commits float64 = 0
 var responses = make(chan *msg.Msg)
+var msgSize = 1 //message size in KB
+var int64Needed = msgSize * 1024 / 8
 
 type connection struct {
 	client msg.MessengerClient
@@ -31,7 +33,7 @@ func Sender(ips []string) {
 
 	start := time.Now()
 	for i := 0; i < len(connections); i++ { //gives unicast message to send
-		connections[i].m <- &msg.Msg{Id: int32(commits)}
+		connections[i].m <- &msg.Msg{Id: int32(commits), Size: make([]int64, int64Needed)}
 	}
 
 	for commits < 10000 {
@@ -40,7 +42,7 @@ func Sender(ips []string) {
 			acks = 0
 
 			for i := 0; i < len(connections); i++ {
-				connections[i].m <- &msg.Msg{Id: int32(commits)}
+				connections[i].m <- &msg.Msg{Id: int32(commits), Size: make([]int64, int64Needed)}
 			}
 		}
 

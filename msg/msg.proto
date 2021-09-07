@@ -10,4 +10,5 @@ service Messenger{
 //Data type used for inter-node communication
 message Msg{
   int32 id = 1;
+  repeated int64 size = 2;
 }
